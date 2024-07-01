@@ -99,10 +99,22 @@ func (h *HeartbeatApiHandler) Post(w http.ResponseWriter, r *http.Request) {
 			machineName = hb.Machine
 		}
 
+		if hb.Project == "<<LAST_PROJECT>>" || hb.Project == "General" {
+			if latest, err := h.heartbeatSrvc.GetLatestByUserWithProject(user); latest != nil && err == nil {
+				hb.Branch = latest.Branch
+				hb.Project = latest.Project
+			} else {
+				hb.Branch = ""
+				hb.Project = ""
+			}
+		}
+
 		if hb.Branch == "<<LAST_BRANCH>>" {
 			if latest, err := h.heartbeatSrvc.GetLatestByFilters(user, models.NewFiltersWith(models.SummaryProject, hb.Project)); latest != nil && err == nil {
 				hb.Branch = latest.Branch
+				conf.Log().Request(r).Error("secondround", err)
 			} else {
+				conf.Log().Request(r).Error("thirdround", err)
 				hb.Branch = ""
 			}
 		}

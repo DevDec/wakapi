@@ -40,6 +40,7 @@ type IHeartbeatService interface {
 	GetAllWithinByFilters(time.Time, time.Time, *models.User, *models.Filters) ([]*models.Heartbeat, error)
 	GetFirstByUsers() ([]*models.TimeByUser, error)
 	GetLatestByUser(*models.User) (*models.Heartbeat, error)
+	GetLatestByUserWithProject(*models.User) (*models.Heartbeat, error)
 	GetLatestByOriginAndUser(string, *models.User) (*models.Heartbeat, error)
 	GetLatestByFilters(*models.User, *models.Filters) (*models.Heartbeat, error)
 	GetEntitySetByUser(uint8, string) ([]string, error)

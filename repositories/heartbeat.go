@@ -71,6 +71,21 @@ func (r *HeartbeatRepository) GetLatestByUser(user *models.User) (*models.Heartb
 	return &heartbeat, nil
 }
 
+func (r *HeartbeatRepository) GetLatestByUserWithProject(user *models.User) (*models.Heartbeat, error) {
+	var heartbeat models.Heartbeat
+	if err := r.db.
+		Model(&models.Heartbeat{}).
+		Where(&models.Heartbeat{UserID: user.ID}).
+		Where("project != ''").
+		Where("project != 'General'").
+		Order("time desc").
+		First(&heartbeat).Error; err != nil {
+		return nil, err
+	}
+	return &heartbeat, nil
+
+}
+
 func (r *HeartbeatRepository) GetLatestByOriginAndUser(origin string, user *models.User) (*models.Heartbeat, error) {
 	var heartbeat models.Heartbeat
 	if err := r.db.

@@ -155,6 +155,10 @@ func (srv *HeartbeatService) GetLatestByUser(user *models.User) (*models.Heartbe
 	return srv.repository.GetLatestByUser(user)
 }
 
+func (srv *HeartbeatService) GetLatestByUserWithProject(user *models.User) (*models.Heartbeat, error) {
+	return srv.repository.GetLatestByUserWithProject(user)
+}
+
 func (srv *HeartbeatService) GetLatestByOriginAndUser(origin string, user *models.User) (*models.Heartbeat, error) {
 	return srv.repository.GetLatestByOriginAndUser(origin, user)
 }
